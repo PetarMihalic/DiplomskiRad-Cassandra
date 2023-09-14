@@ -1,0 +1,68 @@
+﻿@page
+@using SneakerShopCassandra.Pages.Orders;
+@model IndexModel
+
+<h1>All orders</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Order ID</th>
+			<th>User ID</th>
+			<th>Name</th>
+			<th>Created At</th>
+			<th>Payment Type</th>
+			<th>Status</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Order)
+		{
+			<tr>
+				<td>@item.ID</td>
+				<td>@Html.DisplayFor(modelItem => item.UserID)</td>
+				<td>@item.Name</td>
+				<td>@item.CreatedDate</td>
+				<td>@item.PaymentType</td>
+				<form method="POST">
+					<input type="hidden" asp-for="OrderID" value="@item.ID" />
+				<td>
+					<select asp-for="Status" onchange="document.getElementById('@item.ID').disabled=false;">
+							@if (item.Status == "pending")
+							{
+							<option value="pending" selected>pending</option>
+							<option value="in shipping">in shipping</option>
+							<option value="fulfilled">fulfilled</option>
+							<option value="canceled">canceled</option>
+							}
+							else if (item.Status == "in shipping")
+							{
+							<option value="pending">pending</option>
+							<option value="in shipping" selected>in shipping</option>
+							<option value="fulfilled">fulfilled</option>
+							<option value="canceled">canceled</option>
+							}
+							else if (item.Status == "fulfilled")
+							{
+							<option value="pending">pending</option>
+							<option value="in shipping">in shipping</option>
+							<option value="fulfilled" selected>fulfilled</option>
+							<option value="canceled">canceled</option>
+							}
+							else
+							{
+							<option value="pending">pending</option>
+							<option value="in shipping">in shipping</option>
+							<option value="fulfilled">fulfilled</option>
+							<option value="canceled" selected>canceled</option>
+							}
+					</select>
+				<td>
+					<button id="@item.ID" type="submit" class="btn btn-primary btn-sm" disabled>Save changes</button>
+				</td>
+				</form>
+			</tr>
+		}
+	</tbody>
+</table>

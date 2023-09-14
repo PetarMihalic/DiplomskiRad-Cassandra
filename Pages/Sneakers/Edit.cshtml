@@ -1,0 +1,54 @@
+﻿@page
+@using SneakerShopCassandra.Pages.Sneakers;
+@model EditModel
+
+<h1>Edit sneaker</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Sneaker.ID" />
+            <div class="form-group">
+                <label asp-for="Sneaker.Brand" class="control-label"></label>
+                <input asp-for="Sneaker.Brand" class="form-control" />
+                <span asp-validation-for="Sneaker.Brand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sneaker.Name" class="control-label"></label>
+                <input asp-for="Sneaker.Name" class="form-control" />
+                <span asp-validation-for="Sneaker.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sneaker.Description" class="control-label"></label>
+                <textarea asp-for="Sneaker.Description" class="form-control"></textarea>
+                <span asp-validation-for="Sneaker.Description" name="picture1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sneaker.Picture1" class="control-label"></label>
+                <input type="file" accept="image/*" name="picture1" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Sneaker.Picture2" class="control-label"></label>
+                <input type="file" accept="image/*" name="picture2" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Sneaker.Price" class="control-label"></label>
+                <input asp-for="Sneaker.Price" class="form-control" />
+                <span asp-validation-for="Sneaker.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br />
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="/Index">Cancel</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,50 @@
+﻿@page
+@using SneakerShopCassandra.Pages.Inventories;
+@model IndexModel
+
+<h1>Inventory</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].Sneaker.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].Sneaker.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventory[0].Quantity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Inventory) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sneaker.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sneaker.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

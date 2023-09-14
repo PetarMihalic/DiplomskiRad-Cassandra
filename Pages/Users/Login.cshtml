@@ -1,0 +1,43 @@
+﻿@page
+@using SneakerShopCassandra.Pages.Users;
+@model LoginModel
+@{
+}
+
+<br />
+<h2>Login</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>@Model.errorMessage</strong>
+		<button type="button" class="btn-close" data-bs-dissmiss="alert" aria-label="Close"></button>
+	</div>
+}
+
+<form method="POST">
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Email</label>
+		<div class="col-sm-6">
+			<label asp-for="User.Email" class="control-label"></label>
+			<input type="email" asp-for="User.Email" class="form-control" />
+		</div>
+	</div>
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Password</label>
+		<div class="col-sm-6">
+			<label asp-for="User.Password" class="control-label"></label>
+			<input type="password" asp-for="User.Password" class="form-control" />
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="offset-sm-3 col-sm-3 d-grid">
+			<button type="submit" class="btn btn-primary">Login</button>
+		</div>
+		<div class="col-sm-3 d-grid">
+			Don't have an account?
+			<a href="/Users/Create">Register</a>
+		</div>
+	</div>
+</form>

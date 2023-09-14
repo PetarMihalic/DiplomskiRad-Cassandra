@@ -1,0 +1,69 @@
+﻿@page
+@using SneakerShopCassandra.Models;
+@using SneakerShopCassandra.Pages.Orders;
+@model MyOrdersModel
+
+<br />
+<h2>My orders</h2>
+@foreach (var order in Model.Order)
+{
+	<a>(@order.Name) Status: <b>@order.Status</b></a>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Picture</th>
+				<th>Name</th>
+				<th>Size</th>
+				<th>Quantity</th>
+				<th>Price</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		@{
+			decimal totalPerOrder = 0;
+		}
+		<tbody>
+			@foreach (OrderDetails orderDetails in order.OrderDetails)
+			{
+				decimal TotalPerItem = orderDetails.Inventory.Sneaker.Price * orderDetails.Quantity;
+				string DisplayImage = "data:image;base64," + Convert.ToBase64String(orderDetails.Inventory.Sneaker.Picture1);
+				<tr style="vertical-align: middle;">
+					<td><img src="@DisplayImage" style="height:50px"></td>
+					<td>@orderDetails.Inventory.Sneaker.Name</td>
+					<td>@orderDetails.Inventory.Size</td>
+					<td>@orderDetails.Quantity</td>
+					<td>@orderDetails.Inventory.Sneaker.Price €</td>
+					<td>@TotalPerItem €</td>
+				</tr>
+				totalPerOrder += TotalPerItem;
+			}
+		</tbody>
+		<tfoot>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>Total:</td>
+				<td>@totalPerOrder €</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>Created:</td>
+				<td>@order.CreatedDate </td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>Payment type:</td>
+				<td>@order.PaymentType </td>
+			</tr>
+		</tfoot>
+	</table>
+}

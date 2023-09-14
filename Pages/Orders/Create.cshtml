@@ -1,0 +1,99 @@
+﻿@page
+@using SneakerShopCassandra.Pages.Orders;
+@model CreateModel
+
+@{
+}
+
+<br />
+<h2>New order</h2>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Picture</th>
+			<th>Name</th>
+			<th>Size</th>
+			<th>Quantity</th>
+			<th>Price</th>
+			<th>Total</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.listCart)
+		{
+			<tr style="vertical-align: middle;">
+				<td><img src="@item.picture1" style="height:100px"></td>
+				<td>@item.name</td>
+				<td>@item.size</td>
+				<td>@item.quantity</td>
+				<td>@item.price €</td>
+				<td>@item.total €</td>
+			</tr>
+		}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>Total:</td>
+			<td>@Model.TotalCost €</td>
+		</tr>
+	</tfoot>
+</table>
+
+<form method="post">
+	<input type="hidden" class="form-control" asp-for="User.ID" />
+	<div class="row mb-3">
+		<label asp-for="User.FirstName" class="col-sm-3 col-form-label"></label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" asp-for="User.FirstName"/>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<label asp-for="User.LastName" class="col-sm-3 col-form-label"></label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" asp-for="User.LastName"/>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<label asp-for="User.Email" class="col-sm-3 col-form-label"></label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" asp-for="User.Email"/>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<label asp-for="User.Address" class="col-sm-3 col-form-label"></label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" asp-for="User.Address"/>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<label asp-for="User.Phone" class="col-sm-3 col-form-label"></label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" asp-for="User.Phone"/>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Payment type</label>
+		<div class="col-sm-6">
+			<select class="form-control" asp-for="PaymentType">
+				<option value="Credit card" selected>Credit card</option>
+				<option value="Debit card">Debit card</option>
+				<option value="Bank transfer">Bank transfer</option>
+				<option value="Cash">Cash (upon arrival)</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="offset-sm-3 col-sm-3 d-grid">
+			<button type="submit" class="btn btn-primary">ORDER</button>
+		</div>
+		<div class="col-sm-3 d-grid">
+			<a class="btn btn-outline-primary" href="/Carts/Index" role="button">Cancel</a>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,51 @@
+﻿@page
+@using SneakerShopCassandra.Pages.Carts;
+@model IndexModel
+
+@{
+}
+
+<h1>My shopping cart</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Picture</th>
+			<th>Name</th>
+			<th>Size</th>
+			<th>Quantity</th>
+			<th>Price</th>
+			<th>Total</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.listCart)
+		{
+			<tr style="vertical-align: middle;">
+				<td><img src="@item.picture1" style="height:100px"></td>
+				<td>@item.name</td>
+				<td>@item.size</td>
+				<td>@item.quantity</td>
+				<td>@item.price €</td>
+				<td>@item.total €</td>
+				<td>
+					<a class="btn btn-danger btn-sm" href="/Carts/Delete?ID=@item.cartID&quantity=@item.quantity">Remove</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>Total:</td>
+			<td>@Model.TotalCost €</td>
+			<td>
+				<a class="btn btn-primary btn-sm" href="/Orders/Create">Create order</a>
+			</td>
+		</tr>
+	</tfoot>
+</table>

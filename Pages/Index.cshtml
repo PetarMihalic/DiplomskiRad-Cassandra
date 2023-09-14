@@ -1,0 +1,106 @@
+﻿@page
+@using SneakerShopCassandra.Pages;
+@model IndexModel
+@{
+}
+<style>
+    .card:hover {
+        box-shadow: -1px 9px 40px #808080;
+    }
+</style>
+
+<h2>Welcome to SneakerShop</h2>
+<br />
+@if (ViewContext.HttpContext.Session.GetString("Email") == "admin@sneakershop.com")
+    {
+    <p>
+        <a asp-page="Sneakers/Create">Add new sneaker</a>
+    </p>
+    }
+
+
+	<p>
+    <form>
+        Brand: <select asp-for="ItemBrands" asp-items="Model.Brands" onchange="this.form.submit();">
+            <option value="">All</option>
+        </select>
+        Name: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+        <div style="float:right;margin-right:2em">
+            Sort by: <select asp-for="SortBy" onchange="this.form.submit();">
+                <option value="">Name ascending</option>
+                <option value="NameDESC">Name descending</option>
+                <option value="PriceASC">Price ascending</option>
+                <option value="PriceDESC">Price descending</option>
+            </select>
+            Show: <select asp-for="PageSizeString" onchange="this.form.submit();">
+                <option value="">4</option>
+                <option value="8">8</option>
+                <option value="12">12</option>
+            </select>
+        </div>
+    </form>
+	</p>
+<div class="row">
+    @foreach (var item in Model.Sneaker)
+    {
+        string DisplayImage = "data:image;base64," + Convert.ToBase64String(item.Picture1);
+        <div class="card" style="width:19em;margin:10px;background-color:ghostwhite;" onclick="window.location='/Sneakers/Details?ID=@item.ID';">
+            <img src="@DisplayImage" class="card-img-top" style="height:19em; object-fit:scale-down;" />
+            <div class="card-body">
+                <div class="card-title">
+                    <a style="font-size:smaller">@item.Brand</a>
+                    <h4>@item.Name</h4>
+                </div>
+                <div class="card-text">
+                    <p>@item.Price €</p>
+                </div>
+                @if (ViewContext.HttpContext.Session.GetString("Email") == "admin@sneakershop.com")
+                {
+                    <a class="btn btn-secondary btn-sm" href="/Sneakers/Edit?ID=@item.ID">Edit</a>
+                    <a class="btn btn-danger btn-sm" href="/Sneakers/Delete?ID=@item.ID">Delete</a>
+                }
+            </div>
+        </div>
+    }
+</div>
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.PageIndex - 1)"
+   asp-route-searchString="@Model.SearchString"
+   asp-route-itemBrands="@Model.ItemBrands"
+   asp-route-sortBy="@Model.SortBy"
+   asp-route-pageSizeString="@Model.PageSizeString"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-pageIndex="@(Model.PageIndex + 1)"
+   asp-route-searchString="@Model.SearchString"
+   asp-route-itemBrands="@Model.ItemBrands"
+   asp-route-sortBy="@Model.SortBy"
+   asp-route-pageSizeString="@Model.PageSizeString"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script stype="text/javascript">
+    $('.card').hover{
+        function() {
+            $(this).animate({
+                marginTop: "-=1%",
+                marginBottom: "+=1%"
+            }, 200)
+        },
+        function() {
+            $(this).animate({
+                marginTop: "+=1%",
+                marginBottom: "-=1%"
+            }, 200)
+        }
+    }
+</script>

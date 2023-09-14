@@ -1,0 +1,176 @@
+﻿@page
+@using SneakerShopCassandra.Pages.Sneakers;
+@model DetailsModel
+
+@{
+	string DisplayImage1 = "data:image;base64," + Convert.ToBase64String(Model.Sneaker.Picture1);
+	string DisplayImage2 = "";
+	if(Model.Sneaker.Picture2 != null)
+	{
+		DisplayImage2 = "data:image;base64," + Convert.ToBase64String(Model.Sneaker.Picture2);
+	}
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	* {
+		box-sizing: border-box
+	}
+
+	.mySlides {
+		display: none
+	}
+
+	img {
+		vertical-align: middle;
+	}
+
+	.slideshow-container {
+		max-width: 500px;
+		position: relative;
+		float: left;
+		margin-right: 20px;
+	}
+
+	.prev, .next {
+		cursor: pointer;
+		position: absolute;
+		top: 50%;
+		width: auto;
+		padding: 16px;
+		margin-top: -22px;
+		color: white;
+		font-weight: bold;
+		font-size: 18px;
+		transition: 0.6s ease;
+		border-radius: 0 3px 3px 0;
+		user-select: none;
+	}
+
+	.next {
+		right: 0;
+		border-radius: 3px 0 0 3px;
+	}
+
+		.prev:hover, .next:hover {
+			background-color: rgba(0,0,0,0.8);
+		}
+
+	.dot {
+		cursor: pointer;
+		height: 15px;
+		width: 15px;
+		margin: 0 2px;
+		background-color: #bbb;
+		border-radius: 50%;
+		display: inline-block;
+		transition: background-color 0.6s ease;
+	}
+
+		.active, .dot:hover {
+			background-color: #717171;
+		}
+</style>
+<br />
+@if (Model.errorMessage.Length > 0)
+{
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>@Model.errorMessage</strong>
+		<button type="button" class="btn-close" data-bs-dissmiss="alert" aria-label="Close"></button>
+	</div>
+}
+
+<div class="slideshow-container">
+
+	<div class="mySlides">
+		<img src="@DisplayImage1" style="width:100%">
+	</div>
+	@if(Model.Sneaker.Picture2 != null)
+	{
+	<div class="mySlides">
+		<img src="@DisplayImage2" style="width:100%">
+	</div>
+	}
+	<a class="prev" onclick="plusSlides(-1)">❮</a>
+	<a class="next" onclick="plusSlides(1)">❯</a>
+
+	<br>
+
+	<div style="text-align:center">
+		<span class="dot" onclick="currentSlide(1)"></span>
+		<span class="dot" onclick="currentSlide(2)"></span>
+	</div>
+</div>
+
+<script>
+	let slideIndex = 1;
+	showSlides(slideIndex);
+
+	function plusSlides(n) {
+		showSlides(slideIndex += n);
+	}
+
+	function currentSlide(n) {
+		showSlides(slideIndex = n);
+	}
+
+	function showSlides(n) {
+		let i;
+		let slides = document.getElementsByClassName("mySlides");
+		let dots = document.getElementsByClassName("dot");
+		if (n > slides.length) { slideIndex = 1 }
+		if (n < 1) { slideIndex = slides.length }
+		for (i = 0; i < slides.length; i++) {
+			slides[i].style.display = "none";
+		}
+		for (i = 0; i < dots.length; i++) {
+			dots[i].className = dots[i].className.replace(" active", "");
+		}
+		slides[slideIndex - 1].style.display = "block";
+		dots[slideIndex - 1].className += " active";
+	}
+</script>
+
+<h2>@Html.DisplayFor(model => model.Sneaker.Name)</h2>
+<a>@Html.DisplayFor(model => model.Sneaker.Brand)</a><br />
+<a>#@Html.DisplayFor(model => model.Sneaker.ID)</a>
+<br>
+<h6 class="col-sm-9">@Html.DisplayFor(model => model.Sneaker.Description)</h6>
+<h4>@Model.Sneaker.Price €</h4>
+<hr />
+<form method="POST">
+	<input type="hidden" name="ID" value="@Model.Sneaker.ID" readonly />
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label" for="size">Size</label>
+		<select class="col-sm-3" id="size" name="size">
+			@foreach (var item in Model.Inventories)
+			{
+				<option value="@item.Size" class="form-control">@item.Size</option>
+			}
+		</select>
+	</div>
+	<div class="row mb-3">
+		<label class="col-sm-3 col-form-label">Quantity</label>
+		<div class="col-sm-3">
+			<input type="number" class="form-control" name="quantity" value="1" min="1" max="100" />
+		</div>
+	</div>
+
+	@if (Model.successMessage.Length > 0)
+	{
+		<div class="row mb-3">
+			<div class="col-sm-9">
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<strong>@Model.successMessage</strong>
+					<button type="button" class="btn-close" data-bs-dissmiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
+	}
+
+	<div class="row mb-3">
+		<div class="offset-sm-3 col-sm-3 d-grid">
+			<button type="submit" class="btn btn-primary">Add to cart</button>
+		</div>
+	</div>
+</form>
